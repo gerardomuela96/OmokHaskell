@@ -39,7 +39,7 @@ isDraw bd = (isFull bd) && (not(isWonBy bd mkPlayer) || not(isWonBy bd mkOpponen
 
 isGameOver bd = (isDraw bd) || (isWonBy bd mkPlayer) || (isWonBy bd mkOpponent)
 
-boardToStr playerToChar bd = putStr (iterateBoard playerToChar 1 1 bd)
+boardToStr playerToChar bd = iterateBoard playerToChar 1 1 bd
 
 iterateBoard playerToChar y x bd = if x <= (size bd) then
                                       if (marker x y bd) /= 0 then (playerToChar (marker x y bd))++(iterateBoard playerToChar y (x+1) bd)
