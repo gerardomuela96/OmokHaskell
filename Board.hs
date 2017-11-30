@@ -33,11 +33,11 @@ marker x y board = (row y board) !! (x-1)
 
 isFull bd = product [minimum x | x <-bd] /= 0
 
-isWonBy bd p = True
+isWonBy bd p x y = (((checkHorizontalRight bd p (x+1) y 1)+(checkHorizontalLeft bd p (x-1) y 1)) >= 5)
 
-isDraw bd = (isFull bd) && (not(isWonBy bd mkPlayer) || not(isWonBy bd mkOpponent))
+isDraw bd = (isFull bd) -- && (not(isWonBy bd mkPlayer) || not(isWonBy bd mkOpponent))
 
-isGameOver bd = (isDraw bd) || (isWonBy bd mkPlayer) || (isWonBy bd mkOpponent)
+isGameOver bd = (isDraw bd) -- || (isWonBy bd mkPlayer) || (isWonBy bd mkOpponent)
 
 boardToStr playerToChar bd = iterateBoard playerToChar 1 1 bd
 
@@ -46,3 +46,17 @@ iterateBoard playerToChar y x bd = if x <= (size bd) then
 				      else " . "++iterateBoard playerToChar y (x+1) bd
                                    else if y < size bd then "\n"++iterateBoard playerToChar (y+1) 1 bd
 				   else ""
+
+checkHorizontalRight bd p x y c = if x <= 0 && x > (size bd)
+		                  then
+		                   if (isMarkedBy x y bd p) == p
+		                   then checkHorizontalRight bd p (x+1) y (c+1)
+		                   else c
+				  else c
+
+checkHorizontalLeft bd p x y c = if x <= 0 && x > (size bd)
+		                 then
+		                  if (isMarkedBy x y bd p) == p
+		                  then checkHorizontalLeft bd p (x-1) y (c+1)
+		                  else c
+				 else c
