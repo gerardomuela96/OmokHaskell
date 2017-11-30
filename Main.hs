@@ -19,12 +19,17 @@ readXY bd p = do
 	        then readXY'
 	        else let (y, _) = head parsed in
 	        if (fromIntegral y) > 0 && (fromIntegral y) <= size bd
-	        then do
-	        let board = mark (fromIntegral x) (fromIntegral y) bd p
-	        putStrLn (boardToStr playerToChar board)
-	        if p == 1
-	        then readXY board mkOpponent
-	        else readXY board mkPlayer
+	        then
+		 if isMarked (fromIntegral x) (fromIntegral y) bd
+		 then do
+		 putStrLn "Place already marked!"
+		 readXY bd p
+		 else do
+	         let board = mark (fromIntegral x) (fromIntegral y) bd p
+	         putStrLn (boardToStr playerToChar board)
+	         if p == 1
+	         then readXY board mkOpponent
+	         else readXY board mkPlayer
 	        else if (fromIntegral y) == -1
 	        then do
 	        putStrLn "Bye!"
