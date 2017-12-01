@@ -1,8 +1,13 @@
-import Board
+--Gerardo Muela
+--Carlos Herrera
+-- CS3360
+-- Project 3: Omok Haskell
 
+import Board
+--Convert the player's sign to 'X' and 'O' representation.
 playerToChar p = if p == 1 then " O "
                  else " X "
-
+--Get user's x,y input for placing stones on board
 readXY bd p = do
               putStrLn ((playerToChar p)++"'s turn: enter x (1-15) or -1 to quit")
               line <- getLine
@@ -47,7 +52,7 @@ readXY bd p = do
                readXY' = do
 	       putStrLn "Invalid input!"
                readXY bd p
-
+--Print the board and ask for user x,y input
 main = do
        putStrLn (boardToStr playerToChar (mkBoard 15))
        readXY (mkBoard 15) mkPlayer
