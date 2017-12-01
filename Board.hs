@@ -33,10 +33,10 @@ marker x y board = (row y board) !! (x-1)
 
 isFull bd = product [minimum x | x <-bd] /= 0
 
-isWonBy bd p x y = (((checkHorizontalRight bd p (x+1) y 1)+(checkHorizontalLeft bd p (x-1) y 1)) >= 5)
-                   || (((checkVerticalRight bd p x (y+1) 1)+(checkVerticalLeft bd p x (y-1) 1)) >= 5)
-		   || (((checkDiagonalRRight bd p (x+1) (y+1) 1)+(checkDiagonalRLeft bd p (x-1) (y-1) 1)) >= 5)
-		   || (((checkDiagonalLRight bd p (x+1) (y-1) 1)+(checkDiagonalLLeft bd p (x-1) (y+1) 1)) >= 5)
+isWonBy bd p x y = (((checkHorizontalRight bd p (x+1) y 0)+(checkHorizontalLeft bd p (x-1) y 0)+1) >= 5)
+                   || (((checkVerticalRight bd p x (y+1) 0)+(checkVerticalLeft bd p x (y-1) 0)+1) >= 5)
+		   || (((checkDiagonalRRight bd p (x+1) (y+1) 0)+(checkDiagonalRLeft bd p (x-1) (y-1) 0)+1) >= 5)
+		   || (((checkDiagonalLRight bd p (x+1) (y-1) 0)+(checkDiagonalLLeft bd p (x-1) (y+1) 0)+1) >= 5)
 
 isDraw bd = (isFull bd) -- && (not(isWonBy bd mkPlayer) || not(isWonBy bd mkOpponent))
 
