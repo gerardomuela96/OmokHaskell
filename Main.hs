@@ -27,12 +27,14 @@ readXY bd p = do
 		 else do
 	         let board = mark (fromIntegral x) (fromIntegral y) bd p
 	         putStrLn (boardToStr playerToChar board)
-		 -- if isWonBy bd p (fromIntegral x) (fromIntegral y)
-		 -- then putStrLn ((playerToChar p)++" WON!!!")
-		 -- else
-		 if p == 1
-	         then (readXY board mkOpponent)
-	         else (readXY board mkPlayer)
+		 if isDraw board
+		 then putStrLn "DRAW!!!"
+		 else if isWonBy board p (fromIntegral x) (fromIntegral y)
+		 then putStrLn ((playerToChar p)++" WON!!!")
+		 else
+		  if p == 1
+	          then (readXY board mkOpponent)
+	          else (readXY board mkPlayer)
 	        else if (fromIntegral y) == -1
 	        then do
 	        putStrLn "Bye!"

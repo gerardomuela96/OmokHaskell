@@ -34,6 +34,9 @@ marker x y board = (row y board) !! (x-1)
 isFull bd = product [minimum x | x <-bd] /= 0
 
 isWonBy bd p x y = (((checkHorizontalRight bd p (x+1) y 1)+(checkHorizontalLeft bd p (x-1) y 1)) >= 5)
+                   || (((checkVerticalRight bd p x (y+1) 1)+(checkVerticalLeft bd p x (y-1) 1)) >= 5)
+		   || (((checkDiagonalRRight bd p (x+1) (y+1) 1)+(checkDiagonalRLeft bd p (x-1) (y-1) 1)) >= 5)
+		   || (((checkDiagonalLRight bd p (x+1) (y-1) 1)+(checkDiagonalLLeft bd p (x-1) (y+1) 1)) >= 5)
 
 isDraw bd = (isFull bd) -- && (not(isWonBy bd mkPlayer) || not(isWonBy bd mkOpponent))
 
@@ -47,16 +50,58 @@ iterateBoard playerToChar y x bd = if x <= (size bd) then
                                    else if y < size bd then "\n"++iterateBoard playerToChar (y+1) 1 bd
 				   else ""
 
-checkHorizontalRight bd p x y c = if x <= 0 && x > (size bd)
+checkHorizontalRight bd p x y c = if x > 0 && x <= (size bd)
 		                  then
-		                   if (isMarkedBy x y bd p) == p
+		                   if isMarkedBy x y bd p
 		                   then checkHorizontalRight bd p (x+1) y (c+1)
 		                   else c
 				  else c
 
-checkHorizontalLeft bd p x y c = if x <= 0 && x > (size bd)
+checkHorizontalLeft bd p x y c = if x > 0 && x <= (size bd)
 		                 then
-		                  if (isMarkedBy x y bd p) == p
+		                  if isMarkedBy x y bd p
 		                  then checkHorizontalLeft bd p (x-1) y (c+1)
 		                  else c
 				 else c
+
+checkVerticalRight bd p x y c = if y > 0 && y <= (size bd)
+		                then
+		                 if isMarkedBy x y bd p
+		                 then checkVerticalRight bd p x (y+1) (c+1)
+		                 else c
+				else c
+
+checkVerticalLeft bd p x y c = if y > 0 && y <= (size bd)
+		               then
+		                if isMarkedBy x y bd p
+		                then checkVerticalLeft bd p x (y-1) (c+1)
+		                else c
+			       else c
+
+checkDiagonalRRight bd p x y c = if y > 0 && y <= (size bd) && x > 0 && x <= (size bd)
+		                 then
+		                  if isMarkedBy x y bd p
+		                  then checkDiagonalRRight bd p (x+1) (y+1) (c+1)
+		                  else c
+				 else c
+
+checkDiagonalRLeft bd p x y c = if y > 0 && y <= (size bd) && x > 0 && x <= (size bd)
+		                then
+		                 if isMarkedBy x y bd p
+		                 then checkDiagonalRLeft bd p (x-1) (y-1) (c+1)
+		                 else c
+			        else c
+
+checkDiagonalLRight bd p x y c = if y > 0 && y <= (size bd) && x > 0 && x <= (size bd)
+		                 then
+		                  if isMarkedBy x y bd p
+		                  then checkDiagonalLRight bd p (x+1) (y-1) (c+1)
+		                  else c
+				 else c
+
+checkDiagonalLLeft bd p x y c = if y > 0 && y <= (size bd) && x > 0 && x <= (size bd)
+		                then
+		                 if isMarkedBy x y bd p
+		                 then checkDiagonalLLeft bd p (x-1) (y+1) (c+1)
+		                 else c
+			        else c
